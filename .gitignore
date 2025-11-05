@@ -1,2 +1,12 @@
-/.vscode
-/02.exe
+# Executables
+*.exe
+*.out
+*.app
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# Code Runner temporary files
+tempCodeRunnerFile.*
