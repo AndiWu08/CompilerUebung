@@ -1,30 +1,49 @@
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "build 02.cpp",
-      "type": "shell",
-      "command": "g++",
-      "args": [
-        "-std=c++17",
-        "-O2",
-        "-Wall",
-        "02.cpp",
-        "-o",
-        "02.exe"
-      ],
-      "group": {
-        "kind": "build",
-        "isDefault": true
-      },
-      "presentation": {
-        "echo": true,
-        "reveal": "always",
-        "panel": "shared"
-      },
-      "problemMatcher": [
-        "$gcc"
-      ]
-    }
-  ]
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "1: Run Flex (Aktive .l Datei)",
+            "type": "shell",
+            "command": "flex",
+            "args": [
+                // NUTZT DIE AKTIVE DATEI ALS EINGABE
+                "${file}"
+            ],
+            "group": "build",
+            "presentation": {
+                "reveal": "always",
+                "panel": "new"
+            },
+            "detail": "Generiert die C-Quelldatei lex.yy.c aus der aktuell geöffneten .l Datei."
+        },
+        {
+            "label": "2: Compile & Link (GCC)",
+            "type": "shell",
+            "command": "gcc",
+            "args": [
+                // Die durch Flex generierte Datei wird im Ordner der aktiven Datei gesucht
+                "${fileDirname}/lex.yy.c",
+                // Ihre Hauptdatei wird im Ordner der aktiven Datei gesucht
+                "${fileDirname}/main.c",
+                // FIX für Linker-Fehler: Zeigt GCC den MSYS-Bibliothekspfad
+                "-L",
+                "C:/msys64/usr/lib",
+                // Linkt mit der Flex-Bibliothek
+                "-lfl",
+                // WICHTIG: Setzt den Namen der Ausgabedatei im Pfad der aktiven Datei
+                "-o",
+                "${fileDirname}/scanner_app"
+            ],
+            // Stellt sicher, dass Flex zuerst ausgeführt wird
+            "dependsOn": [
+                "1: Run Flex (Aktive .l Datei)"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": ["$gcc"],
+            "detail": "Kompiliert lex.yy.c und main.c in den Quellordner (scanner_app.exe)."
+        }
+    ]
 }
