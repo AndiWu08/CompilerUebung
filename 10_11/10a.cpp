@@ -39,10 +39,10 @@ void S() {
 void A() {
     if (token == 'a')
     {
-        std::cout << "Regel A->aaB \n";
+        std::cout << "Regel A->aaA \n";
         check('a');
         check('a');
-        B();
+        A();
     } else {
         std::cout << "Regel A->B \n";
         B();
